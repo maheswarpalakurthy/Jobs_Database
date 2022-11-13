@@ -112,6 +112,105 @@ CREATE TABLE `jobs_applied` (
 
 USE CASE, SQL QUERIES and RELATIONAL ALGEBRA:
 
+1. MAHESWARA SAI RAM PALAKURTHY
+1. Select t.recruiter_twitter_handle, t.tweet_text, t.tweet_date, t.profile_image_url, j.job_url from tweets_table AS t, job_urls AS j where recruiter_twitter_handle = 'SAICjobs' AND t.tweet_id = j.tweet_id;
+
+Use Case: View the details of tweeted handle, such as handle-name ,text ,tweeted date, user-profile-image-url and links present in the tweet posted by “SAICjobs”.
+Description: User views the list of data related to the tweet posted by  “#SAICjobs”.
+Actor: User
+Precondition: User “SAICjobs” should be present and should have posted tweets.
+Steps:
+Actor action: User views the list of tweet data posted by “SAICjobs”.
+System Responses: The list of data for all the tweets posted by “SAICjobs” are displayed.
+Alternate Path: There are no orders made by a user.
+Error: No history of orders available.
+
+π t . recruiter_twitter_handle, t . tweet_text, t . tweet_date, t . profile_image_url, j . job_url
+ σ recruiter_twitter_handle = "SAICjobs" AND t . tweet_id = j . tweet_id
+  (ρ t tweets_table ×
+   ρ j job_urls)
+
+ <img width="348" alt="image" src="https://user-images.githubusercontent.com/98120682/201506384-56ced227-39c8-4337-b601-3fb25ff33654.png">
+
+
+
+2.	Select A.twitter_handle, B.recruiter_twitter_handle, A.location from osj_users A, tweets_table B where A.twitter_handle <> B.recruiter_twitter_handle and A.location = B.recruiter_tweet_location ORDER BY A.location;
+
+Use Case: Displaying all the tweets with the same location as the User.
+Description: User view tweets from his locality.
+Actor: User
+Precondition: Jobs must be present in the user location.
+Steps:
+Actor action: View Jobs with location same as the User.
+System Responses: The list of Jobs based on the same location as the user are displayed.
+Alternate Path: There are no latest jobs postings.
+Error: No Jobs available from the given location.
+
+τ a . location
+ π a . twitter_handle, b . recruiter_twitter_handle, a . location
+  σ a . twitter_handle <> b . recruiter_twitter_handle AND a . location = b . recruiter_tweet_location
+   (ρ a osj_users ×
+    ρ b tweets_table)
+
+ <img width="366" alt="image" src="https://user-images.githubusercontent.com/98120682/201506390-11f326a2-8a1d-43ec-96bd-92d131dd7a5f.png">
+
+
+
+3.	Select job_url From job_urls Where tweet_id IN (Select tweet_id From tweets_table where tweet_id IN (Select tweet_id from tweet_tags where tags = '#databaseJobs'));
+
+Use Case: View the links attached to the tweet with the hashtag “#databaseJobs”
+Description: User views the links related to the hashtag “#databaseJobs”
+Actor: User
+Precondition: Tweets must be present with the above hashtag.
+Steps:
+Actor action: User views all the links for a particular hashtag.
+System Responses: The links for the Tweets with hashtags.
+Alternate Path: There are no orders made by a user.
+Error: No history of orders available.
+
+π job_url
+ σ tweet_id IN  (π tweet_id
+ σ tweet_id IN (π tweet_id
+ σ tags = "#databaseJobs" tweet_tags) tweets_table) job_urls
+
+ 
+<img width="380" alt="image" src="https://user-images.githubusercontent.com/98120682/201506395-fcf6fde8-ee42-4411-aef7-7697256cb839.png">
+
+
+4.	Select * from tweets_table where tweet_text LIKE '%database%';
+
+Use Case: Display all the jobs with keywords “database” in them.
+Description: User can view and search  all the job postings with keyword “database” in them.
+Actor: User
+Precondition: Jobs with keyword “database” must be present .
+Steps:
+Actor action: User can view Jobs based on keyword “database”.
+System Responses: Display all the job postings with keyword “database”.
+Alternate Path: Job postings are shown as null or none.
+Error: Jobs data unavailable at the moment.
+
+σ tweet_text LIKE "%database%" tweets_table
+ 
+<img width="382" alt="image" src="https://user-images.githubusercontent.com/98120682/201506397-00511216-5164-44b5-b24b-01f98336c355.png">
+
+
+5.	 Select * from tweets_table where tweet_date >= NOW() - INTERVAL 2 DAY;
+
+Use Case: Display all the job postings from the last 2 days.
+Description: Job postings from the last 2 days are displayed.
+Actor: User
+Precondition: There must be jobs posted in the last 2 days.
+Steps:
+Actor action: User can filter Jobs based on the last 48 hours.
+System Responses: Display the Jobs for the last 2 days.
+Alternate Path: No Jobs posted in the given days.
+Error: No Jobs available now.
+
+σ tweet_date = π date σ date - now() tweets_table
+ 
+![image](https://user-images.githubusercontent.com/98120682/201506362-10fd1db1-4225-4b15-ab8d-4bf24453f24f.png)
+
+ 
 2. NAMITHA J C
 
 1. Select DISTINCT recruiter_twitter_handle from tweets_table order by recruiter_twitter_handle;
